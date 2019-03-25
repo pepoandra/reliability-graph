@@ -1,0 +1,85 @@
+/* Split the screen in half */
+.split {
+  height: 100%;
+  /*width: 50%;  */
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+.first {
+  margin-top: 50px;
+
+}
+
+.second {
+  margin-top: 30px;
+
+}
+
+.btn {
+  padding: 10px;
+  height: 50px;
+  white-space: normal;
+  width: 100%;
+
+}
+
+/* Control the left side */
+.left {
+  width: 25%;
+  left: 0;
+  background-color: white;
+}
+
+/* Control the right side */
+.right {
+  width: 75%;
+  right: 0;
+  background-color: white;
+}
+
+/* If you want the content centered horizontally and vertically */
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Style the image inside the centered container, if needed */
+.centered img {
+  width: 150px;
+  border-radius: 50%;
+}
+
+* {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13px;
+}
+circle {
+  fill: steelblue;
+  fill-opacity: 1;
+}
+
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 50px;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  width: 50%;
+}
+
+/* tr:nth-child(even) {
+  background-color: #dddddd;
+} */
