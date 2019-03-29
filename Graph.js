@@ -118,6 +118,14 @@ class Graph {
 		endVertex.deleteEdge(edge);
 	}
 
+	deleteVertex(v) {
+		if (this.vertices[v.getKey()]) {
+			delete this.vertices[v.getKey()];
+		} else {
+			throw new Error("Vertex not found in graph");
+		}
+	}
+
 	/**
 	 * @param {GraphVertex} startVertex
 	 * @param {GraphVertex} endVertex
@@ -246,7 +254,7 @@ class Graph {
 			}
 
 			var bin = i.toString(2).split("");
-			while (bin.length < 5) {
+			while (bin.length < len) {
 				bin.unshift("0");
 			}
 
@@ -273,15 +281,14 @@ class Graph {
 			}
 
 			if (i === 31) {
-				console.log(new_g.getAllEdges());
-				qcsho = new_g;
-				console.log(new_g.isConnected());
+				//	console.log(new_g.getAllEdges());
+				//	console.log(new_g.isConnected());
 			}
 			if (new_g.isConnected()) {
 				//console.log(g);
 				rel += prob;
 
-				console.log(prob + " " + rel);
+				//console.log(prob + " " + rel);
 			}
 		}
 
@@ -295,5 +302,3 @@ class Graph {
 		return Object.keys(this.vertices).toString();
 	}
 }
-
-var qcsho;

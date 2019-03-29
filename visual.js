@@ -103,6 +103,8 @@ function handleFiles(files) {
 
 function calculate(option) {
 	g = new Graph();
+	not_g = new Graph();
+
 	const cost_graph = {};
 	const rel_graph = {};
 	const link_graph = {};
@@ -199,12 +201,22 @@ function calculate(option) {
 						break;
 
 					case "c":
+						if (cost_graph[reached[i]][unreached[j]] < min) {
+							min = cost_graph[reached[i]][unreached[j]];
+							rel = rel_graph[reached[i]][unreached[j]];
+							idx = unreached[j];
+							from = reached[i];
+						}
 						break;
 				}
 			}
 		}
 		//	console.log(`Best cost: ${min} from vertex ${from} to vertex ${idx}`);
 		edges.push([from, idx, cost_graph[from][idx], rel_graph[from][idx], 1]);
+
+		not_g.deleteEdge(
+			not_g.edges[from + "_" + idx] || not_g.edges[idx + "_" + from]
+		);
 
 		const e = new GraphEdge(
 			g.getVertexByKey(from),
@@ -215,7 +227,7 @@ function calculate(option) {
 
 		g.addEdge(e);
 		g.setRel(g.getRel() * rel_graph[from][idx]);
-		console.log(g.getRel());
+		//console.log(g.getRel());
 		total_cost += min * 1;
 		total_rel *= rel;
 		//console.log(unreached);
@@ -234,20 +246,123 @@ function calculate(option) {
 	///	console.log(reached);
 	//	console.log(cost_graph);
 	//	console.log(`Total cost: ${total_cost}\nReliability: ${total_rel}`);
-
+	const pq = new PriorityQueue();
+	var unused_edges = not_g.getAllEdges();
+	var print = true;
 	switch (option) {
 		case "a":
-			console.log(g);
+			var unused_edges = not_g.getAllEdges();
+			for (var i = 0; i < unused_edges.length; i++) {
+				pq.add(unused_edges[i], 1 - unused_edges[i].getRel());
+			}
+
+			while (min_rel > g.getReliability()) {
+				if (pq.isEmpty()) {
+					console.log("No results satisfy these constraints.");
+					alert("No results satisfy these constraints.");
+					print = false;
+					break;
+				}
+				console.log(pq);
+
+				const edge = pq.poll();
+				//	console.log(edge);reliability
+				not_g.deleteEdge(edge);
+				console.log(edge);
+
+				g.addEdge(
+					new GraphEdge(
+						g.getVertexByKey(edge.startVertex),
+						g.getVertexByKey(edge.endVertex),
+						edge.getRel(),
+						edge.getCost()
+					)
+				);
+			}
+
 			break;
 
 		case "b":
+			if (max_cost < g.getCost()) {
+				console.log("No results satisfy these constraints.");
+				alert("No results satisfy these constraints.");
+				print = false;
+				break;
+			}
+			for (var i = 0; i < unused_edges.length; i++) {
+				pq.add(unused_edges[i], 1 - unused_edges[i].getRel());
+			}
+			while (min_rel > g.getReliability()) {
+				console.log(pq);
+
+				const edge = pq.poll();
+				//	console.log(edge);reliability
+				not_g.deleteEdge(edge);
+				console.log(edge);
+
+				if (pq.isEmpty()) {
+					console.log("No results satisfy these constraints.");
+					alert("No results satisfy these constraints.");
+					print = false;
+					break;
+				}
+				console.log(Number(edge.getCost()) + Number(g.getCost()));
+				console.log(max_cost);
+				if (Number(edge.getCost()) + Number(g.getCost()) > max_cost) {
+					continue;
+				}
+				g.addEdge(
+					new GraphEdge(
+						g.getVertexByKey(edge.startVertex),
+						g.getVertexByKey(edge.endVertex),
+						edge.getRel(),
+						edge.getCost()
+					)
+				);
+			}
+
 			break;
 
 		case "c":
+			if (max_cost < g.getCost()) {
+				console.log("No results satisfy these constraints.");
+				alert("No results satisfy these constraints.");
+				print = false;
+				break;
+			}
+			for (var i = 0; i < unused_edges.length; i++) {
+				pq.add(unused_edges[i], 1 - unused_edges[i].getRel());
+			}
+			while (max_cost > g.getCost()) {
+				console.log(pq);
+
+				const edge = pq.poll();
+				//	console.log(edge);reliability
+				not_g.deleteEdge(edge);
+				console.log(edge);
+
+				if (pq.isEmpty()) {
+					break;
+				}
+				console.log(Number(edge.getCost()) + Number(g.getCost()));
+				console.log(max_cost);
+				if (Number(edge.getCost()) + Number(g.getCost()) > max_cost) {
+					continue;
+				}
+				g.addEdge(
+					new GraphEdge(
+						g.getVertexByKey(edge.startVertex),
+						g.getVertexByKey(edge.endVertex),
+						edge.getRel(),
+						edge.getCost()
+					)
+				);
+			}
 			break;
 	}
-
-	printGraph(g);
+	if (print) {
+		printGraph(g);
+	}
 }
 
 function printGraph(g) {
