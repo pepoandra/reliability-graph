@@ -65,6 +65,7 @@
 					type="button"
 					value="Meet given reliability goal"
 					id="option_a"
+					disabled="true"
 					class="second btn"
 					onclick="calculate('a')"
 				/>
@@ -73,6 +74,7 @@
 					type="button"
 					value="Meet given reliability goal subject to given cost constraint"
 					id="option_b"
+					disabled="true"
 					class="second btn"
 					onclick="calculate('b')"
 				/>
@@ -81,6 +83,7 @@
 					type="button"
 					value="Maximize reliability subject to given cost constraint"
 					id="option_c"
+					disabled="true"
 					class="second btn"
 					onclick="calculate('c')"
 				/>
@@ -114,7 +117,7 @@
 					onclick="addOneEdge();"
 				/>
 
-				<table id="edges_table" style="width: 100%; display: block;">
+				<table id="edges_table" style="width: 100%; display: none;">
 					<tbody style="width: 100%;">
 						<tr style="width: 100%;">
 							<td style="width: 50%;">From</td>

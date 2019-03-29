@@ -15,6 +15,8 @@ $(document).ready(function() {
 });
 
 function populateSelects() {
+	document.getElementById("edges_table").style.display = "block";
+
 	const vs = g.getAllVertices();
 	const to = document.getElementById("to");
 	const from = document.getElementById("from");
@@ -96,6 +98,12 @@ function handleFiles(files) {
 			cost_list.push(costs[i]);
 			rel_list.push(rels[i]);
 		}
+
+		//	document.getElementById("addNode").disabled = false;
+		//	document.getElementById("addEdge").disabled = false;
+		document.getElementById("option_c").disabled = false;
+		document.getElementById("option_a").disabled = false;
+		document.getElementById("option_b").disabled = false;
 
 		//calculate()
 	};
@@ -263,12 +271,11 @@ function calculate(option) {
 					print = false;
 					break;
 				}
-				console.log(pq);
+				//	console.log(pq);
 
 				const edge = pq.poll();
-				//	console.log(edge);reliability
 				not_g.deleteEdge(edge);
-				console.log(edge);
+				//	console.log(edge);
 
 				g.addEdge(
 					new GraphEdge(
@@ -293,12 +300,12 @@ function calculate(option) {
 				pq.add(unused_edges[i], 1 - unused_edges[i].getRel());
 			}
 			while (min_rel > g.getReliability()) {
-				console.log(pq);
+				//console.log(pq);
 
 				const edge = pq.poll();
 				//	console.log(edge);reliability
 				not_g.deleteEdge(edge);
-				console.log(edge);
+				//	console.log(edge);
 
 				if (pq.isEmpty()) {
 					console.log("No results satisfy these constraints.");
@@ -306,8 +313,8 @@ function calculate(option) {
 					print = false;
 					break;
 				}
-				console.log(Number(edge.getCost()) + Number(g.getCost()));
-				console.log(max_cost);
+				//	console.log(Number(edge.getCost()) + Number(g.getCost()));
+				//	console.log(max_cost);
 				if (Number(edge.getCost()) + Number(g.getCost()) > max_cost) {
 					continue;
 				}
@@ -334,19 +341,17 @@ function calculate(option) {
 				pq.add(unused_edges[i], 1 - unused_edges[i].getRel());
 			}
 			while (max_cost > g.getCost()) {
-				console.log(pq);
+				//console.log(pq);
 
 				const edge = pq.poll();
 				//	console.log(edge);reliability
 				not_g.deleteEdge(edge);
-				console.log(edge);
+				//	console.log(edge);
 
-				if (pq.isEmpty()) {
-					break;
-				}
-				console.log(Number(edge.getCost()) + Number(g.getCost()));
-				console.log(max_cost);
+				//console.log(Number(edge.getCost()) + Number(g.getCost()));
+				//	console.log(max_cost);
 				if (Number(edge.getCost()) + Number(g.getCost()) > max_cost) {
+					consolelog(edge);
 					continue;
 				}
 				g.addEdge(
@@ -357,6 +362,10 @@ function calculate(option) {
 						edge.getCost()
 					)
 				);
+
+				if (pq.isEmpty()) {
+					break;
+				}
 			}
 			break;
 	}
