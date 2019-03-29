@@ -18,6 +18,9 @@ function populateSelects() {
 	const vs = g.getAllVertices();
 	const to = document.getElementById("to");
 	const from = document.getElementById("from");
+	to.innerHTML = "";
+	from.innerHTML = "";
+
 	for (var i = 0; i < vs.length; i++) {
 		addOption(to, vs[i].getKey());
 		addOption(from, vs[i].getKey());
@@ -44,9 +47,21 @@ function addOneEdge() {
 	const to_value = to_select.options[to_select.selectedIndex].value;
 	const from_value = from_select.options[from_select.selectedIndex].value;
 
+	const rel = document.getElementById("edge_rel").value;
+	const cos = document.getElementById("edge_cost").value;
+
+	if (to_value == from_value) {
+		return;
+	}
 	g.addEdge(
-		new GraphEdge(g.getVertexByKey(to_value), g.getVertexByKey(from_value))
+		new GraphEdge(
+			g.getVertexByKey(to_value),
+			g.getVertexByKey(from_value),
+			rel,
+			cos
+		)
 	);
+	printGraph(g);
 }
 
 function updateMinRel(value) {
