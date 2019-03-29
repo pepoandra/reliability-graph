@@ -1,94 +1,160 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script
-      type="text/javascript"
-      src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
-    ></script>
-    <script type="text/javascript" src="visual.js"></script>
+	<head>
+		<script type="text/javascript" src="jquery.min.js"></script>
+		<script type="text/javascript" src="d3.v2.min.js"></script>
 
-    <link rel="stylesheet" href="index.css" />
-  </head>
+		<script type="text/javascript" src="Comparator.js"></script>
 
-  <body>
-    <div class="split left">
-      <div class="">
-        <label for="txtfile">Upload your own file!</label>
+		<script type="text/javascript" src="Heap.js"></script>
+		<script type="text/javascript" src="MaxHeap.js"></script>
+		<script type="text/javascript" src="MinHeap.js"></script>
+		<script type="text/javascript" src="PriorityQueue.js"></script>
+		<script type="text/javascript" src="Queue.js"></script>
+		<script type="text/javascript" src="Stack.js"></script>
+		<script
+			type="text/javascript"
+			src="stronglyConnectedComponents.js"
+		></script>
 
-        <input
-          type="file"
-          id="txtfile"
-          name="txtfile"
-          accept="text/plain"
-          onchange="handleFiles(this.files)"
-        />
+		<script type="text/javascript" src="LinkedListNode.js"></script>
+		<script type="text/javascript" src="LinkedList.js"></script>
 
-        <input
-          class="second"
-          type="number"
-          id="min_rel"
-          onchange="updateMinRel(this.value)"
-          placeholder="Minimum reliability"
-        />
+		<script type="text/javascript" src="Graph.js"></script>
+		<script type="text/javascript" src="GraphEdge.js"></script>
+		<script type="text/javascript" src="GraphVertex.js"></script>
 
-        <input
-          class="second"
-          type="number"
-          id="max_cost"
-          onchange="updateMaxCost(this.value)"
-          placeholder="Maximum cost"
-        />
+		<script type="text/javascript" src="breadthFirstSearch.js"></script>
+		<script type="text/javascript" src="depthFirstSearch.js"></script>
 
-        <input
-          type="button"
-          value="Meet given reliability goal"
-          id="option_a"
-          class="second btn"
-          onclick="calculate('a')"
-        />
+		<script type="text/javascript" src="visual.js"></script>
 
-        <input
-          type="button"
-          value="Meet given reliability goal subject to given cost constraint"
-          id="option_b"
-          class="second btn"
-          onclick="calculate('b')"
-        />
+		<link rel="stylesheet" href="index.css" />
+	</head>
 
-        <input
-          type="button"
-          value="Maximize reliability subject to given cost constraint"
-          id="option_c"
-          class="second btn"
-          onclick="calculate('c')"
-        />
+	<body>
+		<div class="split left">
+			<div class="">
+				<label for="txtfile">Upload your own file!</label>
 
-        <table>
-          <tr>
-            <td>Reliability</td>
-            <td id="rel_out"></td>
-          </tr>
-          <tr>
-            <td>Cost</td>
-            <td id="cost_out"></td>
-          </tr>
-        </table>
-      </div>
-    </div>
+				<input
+					type="file"
+					id="txtfile"
+					name="txtfile"
+					accept="text/plain"
+					onchange="handleFiles(this.files)"
+				/>
 
-    <div class="split right">
-      <div class="centered">
-        <div id="canvas"></div>
-      </div>
-    </div>
+				<input
+					class="second"
+					type="number"
+					id="min_rel"
+					onchange="updateMinRel(this.value)"
+					placeholder="Minimum reliability"
+				/>
 
-    <script
-      type="text/javascript"
-      src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="http://mbostock.github.com/d3/d3.v2.min.js"
-    ></script>
-  </body>
+				<input
+					class="second"
+					type="number"
+					id="max_cost"
+					onchange="updateMaxCost(this.value)"
+					placeholder="Maximum cost"
+				/>
+
+				<input
+					type="button"
+					value="Meet given reliability goal"
+					id="option_a"
+					class="second btn"
+					onclick="calculate('a')"
+				/>
+
+				<input
+					type="button"
+					value="Meet given reliability goal subject to given cost constraint"
+					id="option_b"
+					class="second btn"
+					onclick="calculate('b')"
+				/>
+
+				<input
+					type="button"
+					value="Maximize reliability subject to given cost constraint"
+					id="option_c"
+					class="second btn"
+					onclick="calculate('c')"
+				/>
+
+				<table style="display: none;">
+					<tr>
+						<td>Reliability</td>
+						<td id="rel_out"></td>
+					</tr>
+					<tr>
+						<td>Cost</td>
+						<td id="cost_out"></td>
+					</tr>
+				</table>
+
+				<input
+					id="addNode"
+					type="button"
+					class="second btn"
+					value="Add node!"
+					disabled="true"
+					onclick="addOneNode();"
+				/>
+
+				<input
+					id="addEdge"
+					type="button"
+					disabled="true"
+					class="second btn"
+					value="Add edge!"
+					onclick="addOneEdge();"
+				/>
+
+				<table id="edges_table" style="width: 100%; display: block;">
+					<tbody style="width: 100%;">
+						<tr style="width: 100%;">
+							<td style="width: 50%;">From</td>
+							<td><select id="from" style="width: 50%;"> </select></td>
+						</tr>
+						<tr style="width: 100%;">
+							<td style="width: 50%;">To</td>
+							<td><select style="width: 50%;" id="to"></select></td>
+						</tr>
+						<tr style="width: 100%;">
+							<td style="width: 50%;">Reliability</td>
+							<td>
+								<input
+									type="number"
+									id="edge_rel"
+									style="width: 50%;"
+									value="1.0"
+								/>
+							</td>
+						</tr>
+						<tr style="width: 100%;">
+							<td style="width: 50%;">Cost</td>
+							<td>
+								<input
+									type="number"
+									style="width: 50%;"
+									id="edge_cost"
+									value="0"
+								/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="split right">
+			<div class="centered">
+				<div id="canvas"></div>
+			</div>
+		</div>
+	</body>
 </html>
