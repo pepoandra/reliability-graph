@@ -15,19 +15,32 @@ $(document).ready(function() {
 });
 
 function populateSelects() {
-	document.getElementById("edges_table").style.display = "block";
+	//uncomment to see buttons, not all logic implemented
+	//document.getElementById("edges_table").style.display = "block";
+	//	document.getElementById("delete_edges_table").style.display = "block";
+	//document.getElementById("addEdge").style.display = "block";
+	//document.getElementById("addNode").style.display = "block";
 
 	const vs = g.getAllVertices();
+	const es = g.getAllEdges();
 	const to = document.getElementById("to");
 	const from = document.getElementById("from");
+	const edge = document.getElementById("edge");
+	const node = document.getElementById("node");
 	to.innerHTML = "";
 	from.innerHTML = "";
+	edge.innerHTML = "";
+	node.innerHTML = "";
 
 	for (var i = 0; i < vs.length; i++) {
 		addOption(to, vs[i].getKey());
 		addOption(from, vs[i].getKey());
+		addOption(node, vs[i].getKey());
 	}
-	document.getElementById("edges_table").style.display = "block";
+
+	for (var k = 0; k < es.length; k++) {
+		addOption(edge, es[k].getKey());
+	}
 }
 
 function addOption(e, o) {
@@ -107,6 +120,21 @@ function handleFiles(files) {
 
 		//calculate()
 	};
+}
+
+function removeOneNode() {
+	const element = document.getElementById("node");
+
+	const ntd = g.getVertexByKey(element.options[element.selectedIndex].value);
+
+	const e = ntd.getEdges();
+	console.log(edges);
+	for (var i = 0; i < e.length; i++) {
+		g.deleteEdge(e[i]);
+	}
+
+	g.deleteVertex(ntd);
+	console.log(g);
 }
 
 function calculate(option) {
@@ -301,20 +329,20 @@ function calculate(option) {
 			}
 			while (min_rel > g.getReliability()) {
 				//console.log(pq);
-
-				const edge = pq.poll();
-				//	console.log(edge);reliability
-				not_g.deleteEdge(edge);
-				//	console.log(edge);
-
 				if (pq.isEmpty()) {
 					console.log("No results satisfy these constraints.");
 					alert("No results satisfy these constraints.");
 					print = false;
 					break;
 				}
-				//	console.log(Number(edge.getCost()) + Number(g.getCost()));
-				//	console.log(max_cost);
+
+				const edge = pq.poll();
+				//	console.log(edge);reliability
+				not_g.deleteEdge(edge);
+				//	console.log(edge);
+
+				console.log(Number(edge.getCost()) + Number(g.getCost()));
+				console.log(max_cost);
 				if (Number(edge.getCost()) + Number(g.getCost()) > max_cost) {
 					continue;
 				}
@@ -342,6 +370,9 @@ function calculate(option) {
 			}
 			while (max_cost > g.getCost()) {
 				//console.log(pq);
+				if (pq.isEmpty()) {
+					break;
+				}
 
 				const edge = pq.poll();
 				//	console.log(edge);reliability
@@ -351,7 +382,7 @@ function calculate(option) {
 				//console.log(Number(edge.getCost()) + Number(g.getCost()));
 				//	console.log(max_cost);
 				if (Number(edge.getCost()) + Number(g.getCost()) > max_cost) {
-					consolelog(edge);
+					//	console.log(edge);
 					continue;
 				}
 				g.addEdge(
@@ -362,10 +393,6 @@ function calculate(option) {
 						edge.getCost()
 					)
 				);
-
-				if (pq.isEmpty()) {
-					break;
-				}
 			}
 			break;
 	}

@@ -106,6 +106,7 @@
 					value="Add node!"
 					disabled="true"
 					onclick="addOneNode();"
+					style=" display: none;"
 				/>
 
 				<input
@@ -114,6 +115,7 @@
 					disabled="true"
 					class="second btn"
 					value="Add edge!"
+					style=" display: none;"
 					onclick="addOneEdge();"
 				/>
 
@@ -148,6 +150,35 @@
 									value="0"
 								/>
 							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<table id="delete_edges_table" style="width: 100%; display: none;">
+					<tbody style="width: 100%;">
+						<tr style="width: 100%;">
+							<td style="width: 50%;">
+								<input
+									id="removeNode"
+									type="button"
+									class="second btntab"
+									value="Delete node:"
+									onclick="removeOneNode();"
+								/>
+							</td>
+							<td><select id="node" style="width: 50%;"> </select></td>
+						</tr>
+						<tr style="width: 100%;">
+							<td style="width: 50%;">
+								<input
+									id="removeNode"
+									type="button"
+									class="second btntab"
+									value="Delete edge:"
+									onclick="removeOneEdge();"
+								/>
+							</td>
+							<td><select style="width: 50%;" id="edge"></select></td>
 						</tr>
 					</tbody>
 				</table>

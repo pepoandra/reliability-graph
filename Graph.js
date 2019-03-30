@@ -249,22 +249,18 @@ class Graph {
 			const new_g = new Graph();
 			var prob = 1;
 			const vertices = this.getAllVertices();
-			for (var v = 0; v < vertices.length; v++) {
-				new_g.addVertex(new GraphVertex(vertices[v].getKey()));
-			}
 
 			var bin = i.toString(2).split("");
 			while (bin.length < len) {
 				bin.unshift("0");
 			}
 
-			//console.log(bin);
+			for (var v = 0; v < vertices.length; v++) {
+				new_g.addVertex(new GraphVertex(vertices[v].getKey()));
+			}
 
 			for (var k = 0; k < len; k++) {
-				//	console.log(k + "   " + Math.pow(2, k + 1));
 				if (bin[k] == "1") {
-					//console.log("adding edge " + k);
-
 					new_g.addEdge(
 						new GraphEdge(
 							new_g.getVertexByKey(es[k].startVertex.getKey()),
@@ -273,25 +269,15 @@ class Graph {
 							es[k].cost
 						)
 					);
-
 					prob *= this.getAllEdges()[k].getRel();
 				} else {
 					prob *= 1 - this.getAllEdges()[k].getRel();
 				}
 			}
-
-			if (i === 31) {
-				//	console.log(new_g.getAllEdges());
-				//	console.log(new_g.isConnected());
-			}
 			if (new_g.isConnected()) {
-				//console.log(g);
 				rel += prob;
-
-				//console.log(prob + " " + rel);
 			}
 		}
-
 		return rel;
 	}
 
